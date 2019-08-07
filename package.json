@@ -1,0 +1,19 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "It describes a to-do list ",
+  "main": "index.js",
+  "scripts": {
+    "start: "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://35.202.231.233:8082/nitish.kumar/todoapp.git"
+  },
+  "author": "Nitish Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
+
