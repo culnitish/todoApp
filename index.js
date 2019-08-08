@@ -3,7 +3,6 @@ const joi =require('joi');
 var app = express();
 app.use(express.json()); //middleware
 
-//module.exports.note=[{taskName : "Cricket",description :"to play cricket on Monday"}];
 
 //Import Routes
 const apiRoute=require('./buisness_logic/api');
