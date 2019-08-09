@@ -4,8 +4,9 @@ var app = express();
 app.use(express.json()); //middleware
 
 
+
 //Import Routes
-const apiRoute=require('./buisness_logic/api');
+const apiRoute=require('./modules/todo/routes/todoRoute');
 app.use('/api/notes',apiRoute);
 // ROUTES
 

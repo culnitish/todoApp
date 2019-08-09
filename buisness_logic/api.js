@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
 });
 
 // for adding a new note
-/*
+
 router.post('/', (req, res, next) => {
     pool.connect(function (err, client, done) {
         if (err) {
@@ -41,18 +41,18 @@ router.post('/', (req, res, next) => {
         var yyyy = today.getFullYear();
 
         today = mm + '/' + dd + '/' + yyyy;
-        client.query('insert into notes (taskName, description, isCompleted, createdAt, updatedAt) values($1 ,$2 , $3 ,$4 ,$5)', [req.body.taskName,req.body.description,false,today,today],function (err, result) {
+        client.query('insert into notes (taskName, description, isCompleted, createdAt, updatedAt) values($1 ,$2 , $3 ,$4 ,$5) RETURNING id', [req.body.taskName,req.body.description,false,today,today],function (err, result) {
              done();
              if (err) {
                  console.log(err);
                  res.status(400).send(err);
              }
-             res.status(200).send(result.rows);
-        })
-    })
+             res.status(200).send(`User added with ID: ${result.rows[0].id}`);
+        });
+    });
  });
- */
-/*
+ /*
+
 router.get('/', function (req, res) {
     console.log("req.body", req.body);
     console.log("req.params",req.params);
@@ -78,4 +78,4 @@ router.post('/',(req,res)=>{
 
 })
 */
-module.exports=router;
+//module.exports=router;
