@@ -6,6 +6,8 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/',todoController.get);
-router.post('/',todoController.get);
-
+router.post('/',todoController.post);
+router.get('/:id',todoController.readSpecific);
+router.put('/:id',todoController.update);
+router.delete('/:id',todoController.delete);
 module.exports=router;

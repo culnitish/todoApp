@@ -7,9 +7,52 @@ class TodoController {
             let ans = await todoModel.fetches();
             res.status(200).send(ans);
         } catch (err) {
-            res.status(400).send(err)
+            res.status(400).send(err);
         }
     };
+
+   async readSpecific(req,res,next){
+    try {
+        let ans = await todoModel.notes_Specific(req.params.id);
+        res.status(200).send(ans);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+   };
+
+   async post(req,res,next){
+       try{
+        //console.log(req.body.taskName,req.body.description);
+           let ans= await todoModel.notes_Post(req.body.taskName,req.body.description);
+           res.status(200).send(ans);
+       }catch(err){
+            res.status(400).send(err);
+       }
+   }; 
+
+   async update(req,res,next){
+       try{
+        let ans = await todoModel.notes_Update(req.params.id,req.body.taskName,req.body.description,req.body.isCompleted);
+        console.log(ans);
+        if(parseInt(ans)===1)
+        {
+            let answer=await todoModel.notes_Specific(req.params.id);
+            res.status(200).send(answer);
+        }
+       }catch(err){
+        res.status(400).send(err);
+       }
+   };
+
+   async delete(req,res,next){
+    try{
+     let ans = await todoModel.notes_Delete(req.params.id);
+     res.status(200).send(ans);
+    }catch(err){
+     res.status(400).send(err);
+    }
+}
+
     
 };
 
