@@ -5,9 +5,9 @@ class TodoValidator {
     async checkPages(req, res, next) {
         let ans = await todoModel.noOfDocuments();
         console.log(ans[0].count);
-        ans = parseInt(ans[0].count) / 10;
+        ans = parseInt(ans[0].count) / req.body.pageSize;
         ans = parseInt(ans);
-        if (req.params.id <= ans) {
+        if (req.body.pageNumber <= ans) {
             next();
         } else {
             res.status(400).send(`Page number out of bound . Max Count of pages is:${ans}`);

@@ -5,10 +5,6 @@ class TodoModel {
     //To fetch all the Notes pagination considered
     async fetches(searchString,isCompleted,orderByCreatedAt,pageSize,pageNumber) {
         return new Promise(async (resolve, reject) => {
-            console.log(searchString,isCompleted,orderByCreatedAt,pageSize,pageNumber);
-            //pageSize=parseInt(pageSize);
-            //pageNumber=parseInt(pageNumber);
-            console.log(typeof(searchString),typeof(isCompleted),typeof(pageNumber),typeof(pageSize)); 
             if(orderByCreatedAt===1){
                 dbConnections.query('Select * from notes where taskName like $1 or description like $1  and isCompleted =($2) order by updatedAt LIMIT ($3) OFFSET (($4) - 1) * ($3) ',
             ['%'+searchString+'%',isCompleted,pageSize,pageNumber]
@@ -79,13 +75,11 @@ class TodoModel {
     async notes_Delete(id) {
         return new Promise(async (resolve, reject) => {
             let notesCount = await this.count_notes(id);
-            //console.log("== NOTEST COUNT ==", notesCount)
             if (parseInt(notesCount[0].count) === 1) {
                 dbConnections.query('DELETE  FROM notes where id=($1) RETURNING id', [id], function (err, result) {
                     if (err) {
                         return reject(err);
                     }
-                    //console.log("== INSIDE FUNCTION ==");
                     return resolve(`Note With id=${id} is Deleted. `);
                 });
             } else {
@@ -112,7 +106,6 @@ class TodoModel {
                     console.log(err);
                     return reject(err);
                 }
-                //console.log(`User added with ID: ${result.rows[0].id}`);
                 return resolve(`User added with ID: ${result.rows[0].id}`);
             });
         })
@@ -135,10 +128,8 @@ class TodoModel {
         return new Promise(async (resolve, reject) => {
             dbConnections.query('select count(*) from notes', function (err, result) {
                 if (err) {
-                    //console.log(err);
                     reject(err);
                 }
-                // console.log(result.rows);
                 resolve(result.rows);
 
             });
