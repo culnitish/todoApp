@@ -2,29 +2,36 @@ const dbConnections = require("../../../lib/dbConnection");
 
 class TodoModel {
 
-    //To fetch all the Notes
-    async fetches() {
+    //To fetch all the Notes pagination considered
+    async fetches(searchString,isCompleted,orderByCreatedAt,pageSize,pageNumber) {
         return new Promise(async (resolve, reject) => {
-            dbConnections.query('SELECT * FROM notes where id < 10', function (err, result) {
+            console.log(searchString,isCompleted,orderByCreatedAt,pageSize,pageNumber);
+            //pageSize=parseInt(pageSize);
+            //pageNumber=parseInt(pageNumber);
+            console.log(typeof(searchString),typeof(isCompleted),typeof(pageNumber),typeof(pageSize)); 
+            if(orderByCreatedAt===1){
+                dbConnections.query('Select * from notes where taskName like $1 or description like $1  and isCompleted =($2) order by updatedAt LIMIT ($3) OFFSET (($4) - 1) * ($3) ',
+            ['%'+searchString+'%',isCompleted,pageSize,pageNumber]
+            , function (err, result) {
                 if (err) {
                     return reject(err);
                 }
                 return resolve(result.rows);
             });
+            }else{
+                dbConnections.query('Select * from notes where taskName like $1 or description like $1  and isCompleted =($2) order by updatedAt desc LIMIT ($3) OFFSET (($4) - 1) * ($3) ',
+                ['%'+searchString+'%',isCompleted,pageSize,pageNumber]
+                , function (err, result) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(result.rows);
+                });
+            }
+            
         })
     };
-    // Consider Pagination Specific page Reading
-    async readSpecificPages(id) {
-        return new Promise(async (resolve, reject) => {
-            dbConnections.query('SELECT * FROM notes LIMIT 10 OFFSET (($1) - 1) * 10', [id], function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(result.rows);
-            });
-        })
-
-    }
+  
     // To fetch a specific Note
     async notes_Specific(id) {
         return new Promise(async (resolve, reject) => {
