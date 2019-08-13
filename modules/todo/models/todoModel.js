@@ -5,7 +5,7 @@ class TodoModel {
     //To fetch all the Notes
     async fetches() {
         return new Promise(async (resolve, reject) => {
-            await dbConnections.query('SELECT * FROM notes where id < 10', function (err, result) {
+             dbConnections.query('SELECT * FROM notes where id < 10', function (err, result) {
                 if (err) {
                     return reject(err);
                 }
@@ -13,10 +13,22 @@ class TodoModel {
             });
         })
     };
+    // Consider Pagination Specific page Reading
+    async readSpecificPages(id){
+        return new Promise(async (resolve, reject) => {
+             dbConnections.query('SELECT * FROM notes LIMIT 10 OFFSET (($1) - 1) * 10', [id], function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(result.rows);
+            });
+        })
+
+    }
     // To fetch a specific Note
     async notes_Specific(id) {
         return new Promise(async (resolve, reject) => {
-            await dbConnections.query('SELECT * FROM notes where id=($1)', [id], function (err, result) {
+             dbConnections.query('SELECT * FROM notes where id=($1)', [id], function (err, result) {
                 if (err) {
                     return reject(err);
                 }
@@ -83,7 +95,7 @@ class TodoModel {
        
         var today =await this.today_Date();
         return new Promise(async (resolve, reject) => {
-            await dbConnections.query('insert into notes (taskName, description, isCompleted, createdAt, updatedAt) values($1 ,$2 , $3 ,$4 ,$5) RETURNING id', [taskName, description, false, today, today], function (err, result) {
+            dbConnections.query('insert into notes (taskName, description, isCompleted, createdAt, updatedAt) values($1 ,$2 , $3 ,$4 ,$5) RETURNING id', [taskName, description, false, today, today], function (err, result) {
                 if (err) {
                     console.log(err);
                     return reject(err);
@@ -105,6 +117,21 @@ class TodoModel {
             resolve(today);
             });
         
+    }
+
+    async noOfDocuments(){
+        return new Promise(async (resolve, reject) => {
+           dbConnections.query('select count(*) from notes', function (err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+              // console.log(result.rows);
+               resolve(result.rows);
+               
+            });
+        });
+
     }
 }
 module.exports = new TodoModel();

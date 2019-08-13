@@ -10,6 +10,14 @@ class TodoController {
             res.status(400).send(err);
         }
     };
+    async readPages(req,res,next){
+        try{
+            let ans= await todoModel.readSpecificPages(req.params.id);
+            res.status(200).send(ans);
+        }catch(err){
+            res.status(400).send(err);
+        }
+    }
 
    async readSpecific(req,res,next){
     try {
