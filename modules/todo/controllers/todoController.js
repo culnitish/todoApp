@@ -30,7 +30,6 @@ class TodoController {
 
    async post(req,res,next){
        try{
-        //console.log(req.body.taskName,req.body.description);
            let ans= await todoModel.notes_Post(req.body.taskName,req.body.description);
            res.status(200).send(ans);
        }catch(err){
@@ -47,6 +46,8 @@ class TodoController {
             let answer=await todoModel.notes_Specific(req.params.id);
             res.status(200).send(answer);
         }
+        else
+        res.status(400).send(ans);
        }catch(err){
         res.status(400).send(err);
        }
